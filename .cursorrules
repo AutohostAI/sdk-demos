@@ -23,7 +23,7 @@ SDK documentation links:
 You must use the following technologies:
 
 - NodeJS v20
-- NextJS v14
+- NextJS v14 (App Router)
 - TailwindCSS v3
 - React v18
 

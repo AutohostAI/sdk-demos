@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { Done } from "@/components/Done";
 import { IDV } from "@/components/IDV";
 import { RegistrationForm } from "@/components/RegistrationForm";
@@ -9,7 +9,7 @@ export function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export default function Home() {
+function RegistrationContent() {
   const [step, setStep] = useState(0);
   const [client, setClient] = useState();
   const searchParams = useSearchParams();
@@ -57,5 +57,13 @@ export default function Home() {
     >
       {renderSteps()}
     </main>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RegistrationContent />
+    </Suspense>
   );
 }

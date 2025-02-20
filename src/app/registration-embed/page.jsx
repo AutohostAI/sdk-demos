@@ -1,14 +1,13 @@
 "use client";
+import { Suspense, useRef } from "react";
 import { EmbedWrapper } from "@/components/embed-wrapper";
 import { useSearchParams } from "next/navigation";
-
-import { useRef } from "react";
 
 export function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export default function Home() {
+function RegistrationEmbedContent() {
   const mainRef = useRef(null);
   const searchParams = useSearchParams();
   const reservationId = searchParams.get("reservationId") || searchParams.get("id") || "6f4b405bacec7461fbce747e3c921a06";
@@ -27,5 +26,13 @@ export default function Home() {
         ></iframe>
       </EmbedWrapper>
     </main>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RegistrationEmbedContent />
+    </Suspense>
   );
 }
