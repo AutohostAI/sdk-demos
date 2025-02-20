@@ -29,8 +29,11 @@ import { DashboardContent } from "./dashboardContent";
 export function Dashboard() {
   return (
     <div
-      className="flex flex-col w-full min-h-screen bg-gray-100 dark:bg-gray-900"
-      style={{ height: "100%" }}
+      className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900"
+      style={{
+        minHeight: '100vh',
+        height: 'auto'
+      }}
     >
       <DashboardContent />
     </div>

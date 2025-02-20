@@ -65,8 +65,10 @@ const Results = ({ sdkKey, reservationId }) => {
   return (
     <CardContent
       id="results"
+      className="overflow-hidden"
       style={{
-        height: loading ? "auto" : "1000px",
+        minHeight: loading ? 'auto' : '600px',
+        height: 'auto'
       }}
     >
       {loading && <ReloadIcon className="h-12 w-12 m-auto animate-spin" />}
@@ -252,8 +254,8 @@ export function DashboardContent() {
               </CardContent>
             </Card>
           </div>
-          <div className="grid md:grid-cols-1 gap-8 mt-8 h-96">
-            <Card>
+          <div className="grid md:grid-cols-1 gap-8 mt-8">
+            <Card className="flex flex-col">
               <CardHeader>
                 <CardTitle>Autohost Verification</CardTitle>
               </CardHeader>

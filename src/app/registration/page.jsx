@@ -1,9 +1,9 @@
 "use client";
+import { useEffect, useRef, useState } from "react";
 import { Done } from "@/components/Done";
 import { IDV } from "@/components/IDV";
 import { RegistrationForm } from "@/components/RegistrationForm";
-
-import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -12,14 +12,15 @@ export function sleep(ms) {
 export default function Home() {
   const [step, setStep] = useState(0);
   const [client, setClient] = useState();
+  const searchParams = useSearchParams();
+  const reservationId = searchParams.get("reservationId") || searchParams.get("id") || "0bb42a7c9a407148e087ed8ee63c1e53";
 
   const mainRef = useRef(null);
   async function init() {
     await sleep(500);
-    console.log("hey");
     window.AutohostSDK.init({
       sandbox: true,
-      reservationId: "AZDGXS7QN-hdmQreB56T",
+      reservationId: reservationId,
     })
       .then((client) => {
         console.log({ client, reservation: client.reservation.get() });
@@ -29,7 +30,6 @@ export default function Home() {
   }
   useEffect(() => {
     if (window) {
-      console.log("try");
       init();
     }
   }, []);
@@ -56,8 +56,6 @@ export default function Home() {
       ref={mainRef}
     >
       {renderSteps()}
-      {/* <RegistrationForm />
-      <IDV /> */}
     </main>
   );
 }
