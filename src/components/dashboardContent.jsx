@@ -44,7 +44,7 @@ async function init({ sdkKey, reservationId }, callback) {
   console.log("slept");
   const client = await window.AutohostSDK.init({
     sandbox: true,
-    // reservationId,
+    reservationId,
   });
   callback();
   client

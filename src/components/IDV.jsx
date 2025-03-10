@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-export function IDV({ onSubmit, client }) {
+export function IDV({ onSubmit, client, reservationId }) {
   const targetRef = useRef(null);
   useEffect(() => {
     if (client) {
@@ -12,11 +12,11 @@ export function IDV({ onSubmit, client }) {
           callbacks: {
             onIDVComplete: onSubmit,
           },
-          reservationId: "AZAWxgU8N-hdmQreBzbE",
+          reservationId: reservationId,
         })
         .mount("#target");
     }
-  }, [client && targetRef]);
+  }, [client, reservationId, targetRef]);
 
   return (
     <div className="mx-auto max-w-md space-y-6 py-12">
