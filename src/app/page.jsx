@@ -2,8 +2,7 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'Autohost SDK Demos | Guest Portal & Admin Dashboard Examples',
-  description: 'Explore demo applications showcasing Autohost SDK capabilities including Guest Portal verification UI, iframe integration, and PMS Admin Dashboard components.',
-  keywords: 'Autohost SDK, Guest Portal, Admin Dashboard, KYC Verification, Identity Verification',
+  description: 'Explore demo applications showcasing Autohost SDK capabilities',
 };
 
 export default function Home() {

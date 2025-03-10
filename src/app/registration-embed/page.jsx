@@ -1,6 +1,7 @@
 "use client";
-import { Suspense, useRef } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { EmbedWrapper } from "@/components/embed-wrapper";
+import { ReservationIdInput } from "@/components/ReservationIdInput";
 import { useSearchParams } from "next/navigation";
 
 export function sleep(ms) {
@@ -9,8 +10,29 @@ export function sleep(ms) {
 
 function RegistrationEmbedContent() {
   const mainRef = useRef(null);
+  const [reservationId, setReservationId] = useState(null);
   const searchParams = useSearchParams();
-  const reservationId = searchParams.get("reservationId") || searchParams.get("id") || "6f4b405bacec7461fbce747e3c921a06";
+  const urlReservationId = searchParams.get("reservationId") || searchParams.get("id");
+  
+  useEffect(() => {
+    if (urlReservationId) {
+      setReservationId(urlReservationId);
+    }
+  }, [urlReservationId]);
+
+  const handleReservationSubmit = ({ reservationId }) => {
+    setReservationId(reservationId);
+  };
+
+  if (!reservationId) {
+    return (
+      <ReservationIdInput 
+        onSubmit={handleReservationSubmit} 
+        title="Enter Reservation ID for Embedded Registration"
+      />
+    );
+  }
+
   return (
     <main
       className="flex h-screen flex-col items-center justify-between"

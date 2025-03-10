@@ -3,6 +3,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { Done } from "@/components/Done";
 import { IDV } from "@/components/IDV";
 import { RegistrationForm } from "@/components/RegistrationForm";
+import { ReservationIdInput } from "@/components/ReservationIdInput";
 import { useSearchParams } from "next/navigation";
 
 export function sleep(ms) {
@@ -12,15 +13,23 @@ export function sleep(ms) {
 function RegistrationContent() {
   const [step, setStep] = useState(0);
   const [client, setClient] = useState();
+  const [reservationId, setReservationId] = useState(null);
   const searchParams = useSearchParams();
-  const reservationId = searchParams.get("reservationId") || searchParams.get("id") || "0bb42a7c9a407148e087ed8ee63c1e53";
-
+  const urlReservationId = searchParams.get("reservationId") || searchParams.get("id");
+  
   const mainRef = useRef(null);
-  async function init() {
+  
+  useEffect(() => {
+    if (urlReservationId) {
+      setReservationId(urlReservationId);
+    }
+  }, [urlReservationId]);
+
+  async function init(id) {
     await sleep(500);
     window.AutohostSDK.init({
       sandbox: true,
-      reservationId: reservationId,
+      reservationId: id,
     })
       .then((client) => {
         console.log({ client, reservation: client.reservation.get() });
@@ -28,23 +37,37 @@ function RegistrationContent() {
       })
       .catch(console.error);
   }
+  
   useEffect(() => {
-    if (window) {
-      init();
+    if (window && reservationId) {
+      init(reservationId);
     }
-  }, []);
+  }, [reservationId]);
 
   function nextStep(e) {
     e?.preventDefault?.();
     setStep((step) => step + 1);
   }
+  
+  const handleReservationSubmit = ({ reservationId }) => {
+    setReservationId(reservationId);
+    // We don't increment the step here because we need to wait for the client to be initialized
+  };
 
   function renderSteps() {
+    if (!reservationId) {
+      return <ReservationIdInput onSubmit={handleReservationSubmit} />;
+    }
+    
+    if (!client) {
+      return <div className="flex justify-center items-center min-h-screen">Initializing...</div>;
+    }
+    
     switch (step) {
       case 0:
         return <RegistrationForm onSubmit={nextStep} client={client} />;
       case 1:
-        return <IDV onSubmit={nextStep} client={client} />;
+        return <IDV onSubmit={nextStep} client={client} reservationId={reservationId} />;
       default:
         return <Done />;
     }
