@@ -46,13 +46,22 @@ export function RegistrationForm({ onSubmit, client }) {
 
           try {
             await client.verification.save({
+
+              // For a wizard-like verification process, set the step name here to help customers tack user drop-off.
+              // Call the `save` method with the same step name for each step in the verification process.
               step: "PersonalInfo",
+
+              // The payload to send to the verification service.
+              // This example sends the personal details collected in the first form.
               data: {
                 email,
                 full_name: `${first_name} ${last_name}`,
                 phone,
                 address,
               },
+
+              // This is a naive implementation of the verification process.
+              // Only send `completed: true` after all steps are completed, such as IDV.
               complete: true,
             });
             onSubmit();

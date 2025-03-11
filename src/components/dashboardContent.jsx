@@ -51,6 +51,17 @@ async function init({ sdkKey, reservationId }, callback) {
     .component("ReservationResults", {
       reservationId,
       apiToken,
+
+      // Optional overrides for the component's styles.
+      // This example hides the verification status header and guest portal completion status.
+      // styles: {
+      //   'verification-status-header': {
+      //     display: 'none'
+      //   },
+      //   'verification-status-guest-portal': {
+      //     display: 'none !important'
+      //   },
+      // }
     })
     .mount("#results");
 }
