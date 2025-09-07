@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const viewport = {
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1,
   maximumScale: 1,
 };
@@ -31,7 +31,13 @@ export default function RootLayout({ children }) {
         </header> */}
         {children}
       </body>
-      <Script src={`https://sdk.autohost.ai/dist/AutohostSDK.v3.bundle.js`} />
+      {/* Production */}
+      {/* <Script src={`https://sdk.autohost.ai/dist/AutohostSDK.v3.bundle.js`} /> */}
+
+      {/* Nightly Build */}
+      <Script
+        src={`https://sdk.autohost.ca/dist/AutohostSDK.v3-beta.bundle.js`}
+      />
     </html>
   );
 }

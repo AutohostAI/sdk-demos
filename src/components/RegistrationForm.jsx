@@ -46,7 +46,6 @@ export function RegistrationForm({ onSubmit, client }) {
 
           try {
             await client.verification.save({
-
               // For a wizard-like verification process, set the step name here to help customers tack user drop-off.
               // Call the `save` method with the same step name for each step in the verification process.
               step: "PersonalInfo",
