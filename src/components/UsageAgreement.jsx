@@ -60,8 +60,21 @@ export function UsageAgreement({ onSubmit, client, reservationId }) {
            * @type {("draw" | "type")[]}
            */
           signatureModes: ["draw", "type"],
-          // Toggle to send the signed copy to the email address on the reservation
+          /**
+           * Toggle to send the signed copy to the email address on the reservation
+           *
+           * @type {boolean}
+           */
           emailSignedCopy: false,
+          /**
+           * Whether to show a checkbox for double opt-in to the usage terms.
+           *
+           * @type {boolean}
+           */
+          showTermsCheckbox: true,
+          /**
+           * Callbacks for the ElectronicSignature component.
+           */
           callbacks: {
             /**
              * Handle the submission of the e-signature process
@@ -86,13 +99,13 @@ export function UsageAgreement({ onSubmit, client, reservationId }) {
             },
           },
         })
-        .mount("#target");
+        .mount("#esignature");
     }
   }, [client, reservationId, targetRef]);
 
   return (
     <div className="max-w-xl h-screen mx-auto flex flex-col">
-      <div id="target" ref={targetRef} className="flex-1 overflow-hidden" />
+      <div id="esignature" ref={targetRef} className="flex-1 overflow-hidden" />
     </div>
   );
 }
