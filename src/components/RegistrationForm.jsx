@@ -26,10 +26,7 @@ import { useState } from "react";
 export function RegistrationForm({ onSubmit, client }) {
   const [loading, setLoading] = useState(false);
   return (
-    <div
-      className="mx-auto max-w-md space-y-6 py-12"
-      style={{ width: "600px" }}
-    >
+    <div className="mx-auto max-w-md space-y-6 py-12 px-4 sm:max-w-lg md:max-w-xl lg:max-w-2xl sm:px-6">
       <div className="space-y-2">
         <h1 className="font-bold">Guest Registration</h1>
       </div>

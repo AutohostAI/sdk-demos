@@ -104,7 +104,7 @@ export function UsageAgreement({ onSubmit, client, reservationId }) {
   }, [client, reservationId, targetRef]);
 
   return (
-    <div className="max-w-xl h-screen mx-auto flex flex-col">
+    <div className="max-w-xl h-screen mx-auto flex flex-col px-4 sm:px-6">
       <div id="esignature" ref={targetRef} className="flex-1 overflow-hidden" />
     </div>
   );

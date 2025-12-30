@@ -15,6 +15,7 @@ function RegistrationContent() {
   const [step, setStep] = useState(0);
   const [client, setClient] = useState();
   const [reservationId, setReservationId] = useState(null);
+  const [idvSettings, setIdvSettings] = useState(null);
   const searchParams = useSearchParams();
   const urlReservationId =
     searchParams.get("reservationId") || searchParams.get("id");
@@ -61,8 +62,9 @@ function RegistrationContent() {
     setStep((step) => step + 1);
   }
 
-  const handleReservationSubmit = ({ reservationId }) => {
+  const handleReservationSubmit = ({ reservationId, idvSettings }) => {
     setReservationId(reservationId);
+    setIdvSettings(idvSettings);
     // We don't increment the step here because we need to wait for the client to be initialized
   };
 
@@ -97,6 +99,7 @@ function RegistrationContent() {
             client={client}
             reservationId={reservationId}
             onSubmit={finish}
+            {...idvSettings}
           />
         );
       default:
