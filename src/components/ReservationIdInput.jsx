@@ -24,7 +24,25 @@ export function ReservationIdInput({ onSubmit, title = "Enter Reservation ID", r
     primaryColor: "rgb(15, 23, 42)",
     allowSelfieRetryInPlace: true,
     includeWhatToExpected: false,
+    locale: "en",
   });
+
+  /**
+   * Supported locales for the IDV component
+   * @type {Array<{code: string, language: string}>}
+   */
+  const supportedLocales = [
+    { code: "cs", language: "Czech" },
+    { code: "de", language: "German" },
+    { code: "en", language: "English" },
+    { code: "es", language: "Spanish" },
+    { code: "fr", language: "French" },
+    { code: "he", language: "Hebrew" },
+    { code: "it", language: "Italian" },
+    { code: "ja", language: "Japanese" },
+    { code: "pt", language: "Portuguese" },
+    { code: "pt-BR", language: "Portuguese (Brazil)" },
+  ];
 
   /**
    * Handle form submission and pass all data including QA settings to parent
@@ -139,6 +157,22 @@ export function ReservationIdInput({ onSubmit, title = "Enter Reservation ID", r
                         className="h-3 w-3"
                       />
                       <Label htmlFor="include-what-to-expect" className="text-xs">Include What To Expect</Label>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="locale" className="text-xs">Locale</Label>
+                      <select
+                        id="locale"
+                        value={idvSettings.locale}
+                        onChange={(e) => setIdvSettings(prev => ({ ...prev, locale: e.target.value }))}
+                        className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-xs shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                      >
+                        {supportedLocales.map((loc) => (
+                          <option key={loc.code} value={loc.code}>
+                            {loc.language} ({loc.code})
+                          </option>
+                        ))}
+                      </select>
                     </div>
                   </div>
                 </div>

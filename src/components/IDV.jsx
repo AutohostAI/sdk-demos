@@ -44,6 +44,9 @@ export function IDV({ onSubmit, client, reservationId, ...rest }) {
 
           // Show what the user can expect from the IDV process
           includeWhatToExpect: rest.includeWhatToExpect ?? false,
+
+          // Set the locale manually
+          locale: rest.locale ?? "en-US",
         })
         .mount("#target");
     }
