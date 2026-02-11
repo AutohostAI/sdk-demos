@@ -1,10 +1,12 @@
-export const metadata = {
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
   title: 'Autohost SDK Demo - Guest Portal',
   description: 'Demo application showcasing the Autohost SDK Guest Portal components and verification results.',
   authors: [{ name: 'Autohost' }],
-  robots: 'noindex, nofollow', // Since this is a demo app
+  robots: 'noindex, nofollow',
 }
 
-export default function DashboardLayout({children}) {
+export default function RegistrationLayout({ children }: { children: React.ReactNode }) {
   return children;
-} 
+}

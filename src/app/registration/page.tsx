@@ -19,17 +19,19 @@ import { ReservationIdInput } from "@/components/ReservationIdInput";
 import { UsageAgreement } from "@/components/UsageAgreement";
 import { useSearchParams } from "next/navigation";
 import { sleep } from "@/lib/utils";
+import type { AutohostClient } from "@/types/autohost-sdk";
+import type { IDVSettings } from "@/components/ReservationIdInput";
 
 function RegistrationContent() {
   const [step, setStep] = useState(0);
-  const [client, setClient] = useState();
-  const [reservationId, setReservationId] = useState(null);
-  const [idvSettings, setIdvSettings] = useState(null);
+  const [client, setClient] = useState<AutohostClient>();
+  const [reservationId, setReservationId] = useState<string | null>(null);
+  const [idvSettings, setIdvSettings] = useState<IDVSettings | null>(null);
   const searchParams = useSearchParams();
   const urlReservationId =
     searchParams.get("reservationId") || searchParams.get("id");
 
-  const mainRef = useRef(null);
+  const mainRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (urlReservationId) {
@@ -37,8 +39,8 @@ function RegistrationContent() {
     }
   }, [urlReservationId]);
 
-  async function init(id) {
-    // Wait for the SDK script (loaded in layout.jsx) to attach to `window`
+  async function init(id: string) {
+    // Wait for the SDK script (loaded in layout.tsx) to attach to `window`
     await sleep(500);
     window.AutohostSDK.init({
       // `sandbox: true` connects to the Autohost dev/testing environment
@@ -57,8 +59,7 @@ function RegistrationContent() {
     }
   }, [reservationId]);
 
-  function nextStep(e) {
-    e?.preventDefault?.();
+  function nextStep() {
     setStep((step) => step + 1);
   }
 
@@ -66,8 +67,7 @@ function RegistrationContent() {
    * Marks the verification as complete via `AutohostSDK.save` and advances
    * to the Done screen. Call this after the final verification step.
    */
-  function finish(e) {
-    e?.preventDefault?.();
+  function finish() {
     window.AutohostSDK.save({
       step: "Finish",
       complete: true,
@@ -77,7 +77,7 @@ function RegistrationContent() {
     setStep((step) => step + 1);
   }
 
-  const handleReservationSubmit = ({ reservationId, idvSettings }) => {
+  const handleReservationSubmit = ({ reservationId, idvSettings }: { reservationId: string; idvSettings: IDVSettings }) => {
     setReservationId(reservationId);
     setIdvSettings(idvSettings);
     // We don't increment the step here because we need to wait for the client to be initialized

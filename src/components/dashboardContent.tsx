@@ -24,12 +24,12 @@ import { Label } from "./ui/label";
 /**
  * Fetches an auth token, initializes the SDK, and mounts the
  * ReservationResults component into `#results`.
- *
- * @param {{ sdkKey: string, reservationId: string }} params
- * @param {Function} callback - Called after the SDK component begins mounting
  */
-async function init({ sdkKey, reservationId }, callback) {
-  // Wait for the SDK script (loaded in layout.jsx) to attach to `window`
+async function init(
+  { sdkKey, reservationId }: { sdkKey: string; reservationId: string },
+  callback: () => void
+) {
+  // Wait for the SDK script (loaded in layout.tsx) to attach to `window`
   await sleep(500);
 
   async function fetchToken() {
@@ -71,26 +71,16 @@ async function init({ sdkKey, reservationId }, callback) {
     .component("ReservationResults", {
       reservationId,
       apiToken,
-
-      // Optional overrides for the component's styles.
-      // This example hides the verification status header and guest portal completion status.
-      // styles: {
-      //   'verification-status-header': {
-      //     display: 'none'
-      //   },
-      //   'verification-status-guest-portal': {
-      //     display: 'none !important'
-      //   },
-      // }
     })
     .mount("#results");
 }
 
-/**
- * Renders the ReservationResults SDK component with a loading spinner.
- * @param {{ sdkKey: string, reservationId: string }} props
- */
-const Results = ({ sdkKey, reservationId }) => {
+interface ResultsProps {
+  sdkKey: string;
+  reservationId: string;
+}
+
+const Results = ({ sdkKey, reservationId }: ResultsProps) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -112,8 +102,8 @@ const Results = ({ sdkKey, reservationId }) => {
 };
 
 export function DashboardContent() {
-  const [sdkKey, setSdkKey] = useState();
-  const [reservationId, setReservationId] = useState();
+  const [sdkKey, setSdkKey] = useState<string | undefined>();
+  const [reservationId, setReservationId] = useState<string | undefined>();
   const [ready, setReady] = useState(false);
 
   if (!ready) {
@@ -145,7 +135,7 @@ export function DashboardContent() {
                 className="w-full"
                 type="submit"
                 disabled={!sdkKey || !reservationId}
-                onClick={(e) => {
+                onClick={() => {
                   setReady(true);
                 }}
               >
@@ -295,7 +285,7 @@ export function DashboardContent() {
               <CardHeader>
                 <CardTitle>Autohost Verification</CardTitle>
               </CardHeader>
-              <Results reservationId={reservationId} sdkKey={sdkKey} />
+              <Results reservationId={reservationId!} sdkKey={sdkKey!} />
             </Card>
           </div>
         </main>
@@ -308,7 +298,7 @@ export function DashboardContent() {
 // Inline SVG icon components used by the sidebar navigation
 // ---------------------------------------------------------------------------
 
-function BriefcaseIcon(props) {
+function BriefcaseIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -328,7 +318,7 @@ function BriefcaseIcon(props) {
   );
 }
 
-function CalendarIcon(props) {
+function CalendarIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -350,7 +340,7 @@ function CalendarIcon(props) {
   );
 }
 
-function HomeIcon(props) {
+function HomeIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -370,7 +360,7 @@ function HomeIcon(props) {
   );
 }
 
-function SettingsIcon(props) {
+function SettingsIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -390,7 +380,7 @@ function SettingsIcon(props) {
   );
 }
 
-function UsersIcon(props) {
+function UsersIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}

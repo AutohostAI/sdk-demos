@@ -6,9 +6,10 @@
  * 2. Guest Portal Iframe Demo — embed the hosted Guest Portal in an iframe
  * 3. PMS Admin Dashboard Demo — admin-side ReservationResults component
  */
+import type { Metadata } from "next";
 import Link from 'next/link';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Autohost SDK Demos | Guest Portal & Admin Dashboard Examples',
   description: 'Explore demo applications showcasing Autohost SDK capabilities',
 };
@@ -55,12 +56,12 @@ export default function Home() {
             <Link
               key={demo.href}
               href={demo.href}
-              className="group block p-6 bg-gray-800/50 rounded-2xl border border-gray-700 hover:border-gray-600 
+              className="group block p-6 bg-gray-800/50 rounded-2xl border border-gray-700 hover:border-gray-600
                         transition-all duration-300 hover:shadow-xl hover:shadow-gray-900/30 hover:-translate-y-1"
             >
               <div className="flex items-center justify-between mb-4">
                 <span className="text-3xl">{demo.icon}</span>
-                <div className={`h-8 w-8 rounded-full bg-gradient-to-br ${demo.gradient} 
+                <div className={`h-8 w-8 rounded-full bg-gradient-to-br ${demo.gradient}
                               opacity-75 group-hover:opacity-100 transition-opacity`} />
               </div>
               <h2 className="text-xl font-semibold mb-3">{demo.title}</h2>
@@ -75,19 +76,19 @@ export default function Home() {
           <p className="text-sm flex items-center justify-center gap-4">
             <span>Built with Autohost SDK</span>
             <span>•</span>
-            <a 
-              href="https://docs.autohost.ai/docs/sdk/sdk-intro" 
-              className="underline hover:text-white transition-colors" 
-              target="_blank" 
+            <a
+              href="https://docs.autohost.ai/docs/sdk/sdk-intro"
+              className="underline hover:text-white transition-colors"
+              target="_blank"
               rel="noopener noreferrer"
             >
               View Documentation
             </a>
             <span>•</span>
-            <a 
-              href="https://github.com/AutohostAI/" 
-              className="hover:text-white transition-colors flex items-center gap-1" 
-              target="_blank" 
+            <a
+              href="https://github.com/AutohostAI/"
+              className="hover:text-white transition-colors flex items-center gap-1"
+              target="_blank"
               rel="noopener noreferrer"
             >
               <span className="text-lg">★</span> GitHub

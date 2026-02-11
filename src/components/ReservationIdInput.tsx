@@ -5,6 +5,25 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
 
+export interface IDVSettings {
+  primaryColor: string;
+  allowSelfieRetryInPlace: boolean;
+  includeWhatToExpect: boolean;
+  locale: string;
+}
+
+export interface ReservationSubmitData {
+  reservationId: string;
+  sdkKey: string;
+  idvSettings: IDVSettings;
+}
+
+export interface ReservationIdInputProps {
+  onSubmit: (data: ReservationSubmitData) => void;
+  title?: string;
+  requireSDKKey?: boolean;
+}
+
 /**
  * ReservationIdInput — Shared entry-point component
  *
@@ -14,31 +33,21 @@ import { Separator } from "./ui/separator";
  * The expandable "SDK Settings" panel below the main form is a QA/testing
  * aid that lets developers override IDV component options (primary color,
  * selfie retry, locale, etc.) without changing code.
- *
- * @param {Object}   props
- * @param {Function} props.onSubmit       - Called with { reservationId, sdkKey, idvSettings }
- * @param {string}   [props.title="Enter Reservation ID"] - Title for the input form
- * @param {boolean}  [props.requireSDKKey=false] - Whether to require SDK key input
- * @returns {JSX.Element|null} The reservation input form, or null after submission
  */
-export function ReservationIdInput({ onSubmit, title = "Enter Reservation ID", requireSDKKey = false }) {
+export function ReservationIdInput({ onSubmit, title = "Enter Reservation ID", requireSDKKey = false }: ReservationIdInputProps) {
   const [reservationId, setReservationId] = useState("");
   const [sdkKey, setSdkKey] = useState("");
   const [ready, setReady] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  
+
   // IDV Configuration Settings
-  const [idvSettings, setIdvSettings] = useState({
+  const [idvSettings, setIdvSettings] = useState<IDVSettings>({
     primaryColor: "rgb(15, 23, 42)",
     allowSelfieRetryInPlace: true,
     includeWhatToExpect: false,
     locale: "en",
   });
 
-  /**
-   * Supported locales for the IDV component
-   * @type {Array<{code: string, language: string}>}
-   */
   const supportedLocales = [
     { code: "cs", language: "Czech" },
     { code: "de", language: "German" },
@@ -52,18 +61,13 @@ export function ReservationIdInput({ onSubmit, title = "Enter Reservation ID", r
     { code: "pt-BR", language: "Portuguese (Brazil)" },
   ];
 
-  /**
-   * Handle form submission and pass all data including QA settings to parent
-   * @param {Event} e - Form submit event
-   */
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     setReady(true);
-    // Pass reservation data and QA settings for SDK component configuration
-    onSubmit({ 
-      reservationId, 
+    onSubmit({
+      reservationId,
       sdkKey,
-      idvSettings 
+      idvSettings
     });
   };
 
@@ -122,7 +126,7 @@ export function ReservationIdInput({ onSubmit, title = "Enter Reservation ID", r
           >
             {showSettings ? "Hide" : "Show"} SDK Settings
           </Button>
-          
+
           {showSettings && (
             <Card className="mt-2">
               <CardContent className="p-4">
@@ -131,7 +135,7 @@ export function ReservationIdInput({ onSubmit, title = "Enter Reservation ID", r
                     <Label className="text-sm font-medium">IDV Component Settings</Label>
                     <Separator />
                   </div>
-                  
+
                   <div className="space-y-3">
                     <div className="space-y-2">
                       <Label htmlFor="primary-color" className="text-xs">Primary Color</Label>
@@ -144,7 +148,7 @@ export function ReservationIdInput({ onSubmit, title = "Enter Reservation ID", r
                         className="text-xs"
                       />
                     </div>
-                    
+
                     <div className="flex items-center space-x-2">
                       <input
                         id="allow-selfie-retry"
@@ -155,7 +159,7 @@ export function ReservationIdInput({ onSubmit, title = "Enter Reservation ID", r
                       />
                       <Label htmlFor="allow-selfie-retry" className="text-xs">Allow Selfie Retry In Place</Label>
                     </div>
-                    
+
                     <div className="flex items-center space-x-2">
                       <input
                         id="include-what-to-expect"

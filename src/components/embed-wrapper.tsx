@@ -16,7 +16,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 
-export function EmbedWrapper({ children }) {
+export interface EmbedWrapperProps {
+  children: React.ReactNode;
+}
+
+export function EmbedWrapper({ children }: EmbedWrapperProps) {
   return (
     <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 lg:block">
@@ -115,7 +119,7 @@ export function EmbedWrapper({ children }) {
 // Inline SVG icon components used by the sidebar and header
 // ---------------------------------------------------------------------------
 
-function BadgeCheckIcon(props) {
+function BadgeCheckIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -135,7 +139,7 @@ function BadgeCheckIcon(props) {
   );
 }
 
-function InfoIcon(props) {
+function InfoIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -156,7 +160,7 @@ function InfoIcon(props) {
   );
 }
 
-function PlaneIcon(props) {
+function PlaneIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -175,7 +179,7 @@ function PlaneIcon(props) {
   );
 }
 
-function WaypointsIcon(props) {
+function WaypointsIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}

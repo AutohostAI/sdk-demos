@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
-import { cva } from "class-variance-authority";
+import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 
@@ -33,10 +33,6 @@ const buttonVariants = cva(
   }
 );
 
-/**
- * Loading spinner component for button states
- * @returns {JSX.Element} Animated spinner icon
- */
 const LoadingSpinner = () => (
   <svg
     className="animate-spin -ml-1 mr-2 h-4 w-4"
@@ -60,18 +56,14 @@ const LoadingSpinner = () => (
   </svg>
 );
 
-/**
- * Button component with loading state support
- * @param {Object} props - Component props
- * @param {string} props.className - Additional CSS classes
- * @param {string} props.variant - Button style variant
- * @param {string} props.size - Button size
- * @param {boolean} props.asChild - Render as child component
- * @param {boolean} props.loading - Show loading spinner and disable button
- * @param {React.Ref} ref - Forward ref
- * @returns {JSX.Element} Button component
- */
-const Button = React.forwardRef(
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
+  loading?: boolean;
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     { className, variant, size, asChild = false, loading, children, ...props },
     ref

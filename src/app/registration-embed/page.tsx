@@ -20,8 +20,8 @@ import { ReservationIdInput } from "@/components/ReservationIdInput";
 import { useSearchParams } from "next/navigation";
 
 function RegistrationEmbedContent() {
-  const mainRef = useRef(null);
-  const [reservationId, setReservationId] = useState(null);
+  const mainRef = useRef<HTMLElement>(null);
+  const [reservationId, setReservationId] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const urlReservationId = searchParams.get("reservationId") || searchParams.get("id");
 
@@ -31,7 +31,7 @@ function RegistrationEmbedContent() {
     }
   }, [urlReservationId]);
 
-  const handleReservationSubmit = ({ reservationId }) => {
+  const handleReservationSubmit = ({ reservationId }: { reservationId: string }) => {
     setReservationId(reservationId);
   };
 

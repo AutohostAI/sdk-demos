@@ -3,18 +3,20 @@
  *
  * Collects first name, last name, email, phone, and address from the guest,
  * then saves the data to Autohost via `client.verification.save()`.
- *
- * @param {Object}   props
- * @param {Function} props.onSubmit - Called after the data is saved successfully
- * @param {Object}   props.client  - The initialized Autohost SDK client instance
  */
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
+import type { AutohostClient } from "@/types/autohost-sdk";
 
-export function RegistrationForm({ onSubmit, client }) {
+export interface RegistrationFormProps {
+  onSubmit: () => void;
+  client: AutohostClient;
+}
+
+export function RegistrationForm({ onSubmit, client }: RegistrationFormProps) {
   const [loading, setLoading] = useState(false);
   return (
     <div className="mx-auto max-w-md space-y-6 py-12 px-4 sm:max-w-lg md:max-w-xl lg:max-w-2xl sm:px-6">
@@ -23,16 +25,17 @@ export function RegistrationForm({ onSubmit, client }) {
       </div>
       <form
         className="space-y-4"
-        onSubmit={async (e) => {
+        onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault();
           setLoading(true);
 
           // Access form values by input id (set on each <Input> below)
-          const first_name = e.target.elements["first-name"].value;
-          const last_name = e.target.elements["last-name"].value;
-          const email = e.target.elements["email"].value;
-          const phone = e.target.elements["phone"].value;
-          const address = e.target.elements["address"].value;
+          const form = e.target as HTMLFormElement;
+          const first_name = (form.elements.namedItem("first-name") as HTMLInputElement).value;
+          const last_name = (form.elements.namedItem("last-name") as HTMLInputElement).value;
+          const email = (form.elements.namedItem("email") as HTMLInputElement).value;
+          const phone = (form.elements.namedItem("phone") as HTMLInputElement).value;
+          const address = (form.elements.namedItem("address") as HTMLTextAreaElement).value;
 
           try {
             await client.verification.save({
