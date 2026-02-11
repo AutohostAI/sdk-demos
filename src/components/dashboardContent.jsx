@@ -1,4 +1,18 @@
-import { sleep } from "@/app/registration/page";
+/**
+ * Admin Dashboard Content
+ *
+ * Demonstrates the Autohost SDK's admin-side ReservationResults component.
+ *
+ * Flow:
+ *   1. User enters an SDK API key and a reservation ID.
+ *   2. The `init` function fetches a scoped auth token from the Autohost API.
+ *   3. The SDK is initialized with `window.AutohostSDK.init()`.
+ *   4. The `ReservationResults` component is mounted into the `#results` div.
+ *
+ * The surrounding layout (sidebar, guest details cards) is a mock PMS UI
+ * to show how the SDK widget looks when embedded in a real admin panel.
+ */
+import { sleep } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
@@ -6,8 +20,16 @@ import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+
+/**
+ * Fetches an auth token, initializes the SDK, and mounts the
+ * ReservationResults component into `#results`.
+ *
+ * @param {{ sdkKey: string, reservationId: string }} params
+ * @param {Function} callback - Called after the SDK component begins mounting
+ */
 async function init({ sdkKey, reservationId }, callback) {
-  console.log("init");
+  // Wait for the SDK script (loaded in layout.jsx) to attach to `window`
   await sleep(500);
 
   async function fetchToken() {
@@ -33,15 +55,13 @@ async function init({ sdkKey, reservationId }, callback) {
       );
 
       const data = await response.json();
-      console.log("Data:", data);
-      return data.token; // Return the token once the promise resolves
+      return data.token;
     } catch (error) {
-      console.error("Error:", error);
-      return ""; // Return an empty string or handle the error as needed
+      console.error("Error fetching auth token:", error);
+      return "";
     }
   }
   const apiToken = await fetchToken();
-  console.log("slept");
   const client = await window.AutohostSDK.init({
     sandbox: true,
     reservationId,
@@ -66,6 +86,10 @@ async function init({ sdkKey, reservationId }, callback) {
     .mount("#results");
 }
 
+/**
+ * Renders the ReservationResults SDK component with a loading spinner.
+ * @param {{ sdkKey: string, reservationId: string }} props
+ */
 const Results = ({ sdkKey, reservationId }) => {
   const [loading, setLoading] = useState(true);
 
@@ -89,7 +113,7 @@ const Results = ({ sdkKey, reservationId }) => {
 
 export function DashboardContent() {
   const [sdkKey, setSdkKey] = useState();
-  const [reservationId, setReservationid] = useState();
+  const [reservationId, setReservationId] = useState();
   const [ready, setReady] = useState(false);
 
   if (!ready) {
@@ -102,19 +126,19 @@ export function DashboardContent() {
             </CardHeader>
             <CardContent className="grid gap-4">
               <div className="space-y-2">
-                <Label htmlFor="first-name">SDK Key</Label>
+                <Label htmlFor="sdk-key">SDK Key</Label>
                 <Input
-                  id="first-name"
+                  id="sdk-key"
                   required
                   onChange={(e) => setSdkKey(e.target.value)}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="last-name">Reservation Id</Label>
+                <Label htmlFor="reservation-id">Reservation Id</Label>
                 <Input
-                  id="last-name"
+                  id="reservation-id"
                   required
-                  onChange={(e) => setReservationid(e.target.value)}
+                  onChange={(e) => setReservationId(e.target.value)}
                 />
               </div>
               <Button
@@ -137,6 +161,7 @@ export function DashboardContent() {
     <>
       <div className="flex flex-1">
         <nav className="bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 w-64 p-4">
+          {/* Decorative sidebar — links are non-functional (mock PMS UI) */}
           <ul className="space-y-2">
             <li>
               <Link
@@ -279,6 +304,10 @@ export function DashboardContent() {
   );
 }
 
+// ---------------------------------------------------------------------------
+// Inline SVG icon components used by the sidebar navigation
+// ---------------------------------------------------------------------------
+
 function BriefcaseIcon(props) {
   return (
     <svg
@@ -321,25 +350,6 @@ function CalendarIcon(props) {
   );
 }
 
-function HeartIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-    </svg>
-  );
-}
-
 function HomeIcon(props) {
   return (
     <svg
@@ -376,27 +386,6 @@ function SettingsIcon(props) {
     >
       <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
       <circle cx="12" cy="12" r="3" />
-    </svg>
-  );
-}
-
-function ShareIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-      <polyline points="16 6 12 2 8 6" />
-      <line x1="12" x2="12" y1="2" y2="15" />
     </svg>
   );
 }

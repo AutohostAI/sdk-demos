@@ -1,19 +1,30 @@
+/**
+ * Guest Portal Iframe Embed Demo
+ *
+ * The simplest Autohost integration approach — embed the hosted Guest Portal
+ * in an iframe pointing to `gueststay.in/{reservationId}`.
+ *
+ * Query parameters:
+ *   - `embed=1`      — tells the portal to render in embedded mode (no header/footer)
+ *   - `isMobile=yes` — forces the mobile-friendly layout inside the iframe
+ *
+ * The `allow` attribute grants the iframe access to:
+ *   - `geolocation` — used by the address autocomplete field
+ *   - `camera`      — used by the IDV selfie capture step
+ *   - `fullscreen`  — allows document viewing in fullscreen
+ */
 "use client";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { EmbedWrapper } from "@/components/embed-wrapper";
 import { ReservationIdInput } from "@/components/ReservationIdInput";
 import { useSearchParams } from "next/navigation";
 
-export function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 function RegistrationEmbedContent() {
   const mainRef = useRef(null);
   const [reservationId, setReservationId] = useState(null);
   const searchParams = useSearchParams();
   const urlReservationId = searchParams.get("reservationId") || searchParams.get("id");
-  
+
   useEffect(() => {
     if (urlReservationId) {
       setReservationId(urlReservationId);
@@ -26,8 +37,8 @@ function RegistrationEmbedContent() {
 
   if (!reservationId) {
     return (
-      <ReservationIdInput 
-        onSubmit={handleReservationSubmit} 
+      <ReservationIdInput
+        onSubmit={handleReservationSubmit}
         title="Enter Reservation ID for Embedded Registration"
       />
     );

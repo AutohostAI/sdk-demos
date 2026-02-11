@@ -1,3 +1,15 @@
+/**
+ * Guest Portal SDK Demo — Registration Page
+ *
+ * Multi-step wizard that demonstrates the Autohost SDK's guest-facing
+ * verification components:
+ *
+ *   ReservationIdInput — collect a reservation ID (shown while reservationId is null)
+ *   RegistrationForm (step 0) — collect personal info and save via the SDK
+ *   UsageAgreement (step 1) — display and sign an electronic usage agreement
+ *   IDV (step 2) — identity document verification (selfie + ID photo)
+ *   Done (default) — confirmation screen
+ */
 "use client";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Done } from "@/components/Done";
@@ -6,10 +18,7 @@ import { RegistrationForm } from "@/components/RegistrationForm";
 import { ReservationIdInput } from "@/components/ReservationIdInput";
 import { UsageAgreement } from "@/components/UsageAgreement";
 import { useSearchParams } from "next/navigation";
-
-export function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+import { sleep } from "@/lib/utils";
 
 function RegistrationContent() {
   const [step, setStep] = useState(0);
@@ -29,13 +38,14 @@ function RegistrationContent() {
   }, [urlReservationId]);
 
   async function init(id) {
+    // Wait for the SDK script (loaded in layout.jsx) to attach to `window`
     await sleep(500);
     window.AutohostSDK.init({
+      // `sandbox: true` connects to the Autohost dev/testing environment
       sandbox: true,
       reservationId: id,
     })
       .then((client) => {
-        // console.log({ client, reservation: client.reservation.get() });
         setClient(client);
       })
       .catch(console.error);
@@ -51,6 +61,11 @@ function RegistrationContent() {
     e?.preventDefault?.();
     setStep((step) => step + 1);
   }
+
+  /**
+   * Marks the verification as complete via `AutohostSDK.save` and advances
+   * to the Done screen. Call this after the final verification step.
+   */
   function finish(e) {
     e?.preventDefault?.();
     window.AutohostSDK.save({
@@ -89,7 +104,8 @@ function RegistrationContent() {
           <UsageAgreement
             client={client}
             reservationId={reservationId}
-            // Ignore the submit data for now
+            // The ElectronicSignature callback passes signing metadata (date, IP, geo, etc.)
+            // but this demo simply advances to the next step.
             onSubmit={() => nextStep()}
           />
         );

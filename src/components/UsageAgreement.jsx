@@ -23,13 +23,15 @@ import { useEffect, useRef } from "react";
  * @property {Function} onSubmit
  * @property {Object} client
  * @property {string} reservationId
- * @returns {JSX.Element}
  */
 
 /**
  * UsageAgreement component
- * @name UsageAgreement
- * @description UsageAgreement component
+ *
+ * Mounts the SDK's ElectronicSignature component, which renders a
+ * property-specific usage agreement document with signature capture.
+ * The guest reads the agreement, signs (draw or type), and submits.
+ *
  * @param {UsageAgreementProps} params
  * @returns {JSX.Element}
  */
@@ -37,8 +39,6 @@ export function UsageAgreement({ onSubmit, client, reservationId }) {
   const targetRef = useRef(null);
   useEffect(() => {
     if (client) {
-      console.log("mounting", client);
-
       client
         ?.component("ElectronicSignature", {
           /**
@@ -95,7 +95,7 @@ export function UsageAgreement({ onSubmit, client, reservationId }) {
              * @returns {void}
              */
             onScrollToBottom: () => {
-              console.log("User scrolled to bottom of the document");
+              // Called when the guest scrolls to the bottom of the agreement document.
             },
           },
         })

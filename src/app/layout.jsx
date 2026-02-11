@@ -1,3 +1,10 @@
+/**
+ * Root Layout
+ *
+ * Loads the Autohost SDK script globally so every demo page can access
+ * `window.AutohostSDK`. The script is loaded via Next.js <Script> to
+ * ensure non-blocking, deferred loading.
+ */
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
@@ -19,22 +26,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        {/* <header className="flex items-center justify-between h-16 px-4 md:px-6 border-b sticky top-0 bg-white hidden sm:block">
-          <Link
-            href="#"
-            className="flex items-center gap-2 text-lg font-semibold"
-            prefetch={false}
-          >
-            <MountainIcon className="w-12 h-12" />
-            <span className="sr-only">Acme Inc</span>
-          </Link>
-        </header> */}
         {children}
       </body>
-      {/* Production */}
+      {/* Production — stable release of the SDK */}
       {/* <Script src={`https://sdk.autohost.ai/dist/AutohostSDK.v3.bundle.js`} /> */}
 
-      {/* Nightly Build */}
+      {/* Nightly — pre-release build used for testing new SDK features */}
       <Script
         src={`https://sdk.autohost.ca/dist/AutohostSDK.v3-beta.bundle.js`}
       />

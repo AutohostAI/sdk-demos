@@ -1,3 +1,11 @@
+/**
+ * Landing Page
+ *
+ * Links to the three SDK demo experiences:
+ * 1. Guest Portal SDK Demo — custom verification UI built with SDK components
+ * 2. Guest Portal Iframe Demo — embed the hosted Guest Portal in an iframe
+ * 3. PMS Admin Dashboard Demo — admin-side ReservationResults component
+ */
 import Link from 'next/link';
 
 export const metadata = {

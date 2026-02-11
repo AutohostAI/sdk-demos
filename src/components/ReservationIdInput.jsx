@@ -6,12 +6,20 @@ import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
 
 /**
- * ReservationIdInput component with QA settings for SDK component testing
- * @param {Object} props - Component props
- * @param {Function} props.onSubmit - Callback function called with { reservationId, sdkKey, idvSettings }
- * @param {string} [props.title="Enter Reservation ID"] - Title for the input form
- * @param {boolean} [props.requireSDKKey=false] - Whether to require SDK key input
- * @returns {JSX.Element|null} The reservation input form or null when submitted
+ * ReservationIdInput — Shared entry-point component
+ *
+ * Used by both the Guest Portal SDK demo and the Iframe Embed demo to
+ * collect a reservation ID before initializing the SDK.
+ *
+ * The expandable "SDK Settings" panel below the main form is a QA/testing
+ * aid that lets developers override IDV component options (primary color,
+ * selfie retry, locale, etc.) without changing code.
+ *
+ * @param {Object}   props
+ * @param {Function} props.onSubmit       - Called with { reservationId, sdkKey, idvSettings }
+ * @param {string}   [props.title="Enter Reservation ID"] - Title for the input form
+ * @param {boolean}  [props.requireSDKKey=false] - Whether to require SDK key input
+ * @returns {JSX.Element|null} The reservation input form, or null after submission
  */
 export function ReservationIdInput({ onSubmit, title = "Enter Reservation ID", requireSDKKey = false }) {
   const [reservationId, setReservationId] = useState("");
@@ -23,7 +31,7 @@ export function ReservationIdInput({ onSubmit, title = "Enter Reservation ID", r
   const [idvSettings, setIdvSettings] = useState({
     primaryColor: "rgb(15, 23, 42)",
     allowSelfieRetryInPlace: true,
-    includeWhatToExpected: false,
+    includeWhatToExpect: false,
     locale: "en",
   });
 
@@ -152,8 +160,8 @@ export function ReservationIdInput({ onSubmit, title = "Enter Reservation ID", r
                       <input
                         id="include-what-to-expect"
                         type="checkbox"
-                        checked={idvSettings.includeWhatToExpected}
-                        onChange={(e) => setIdvSettings(prev => ({ ...prev, includeWhatToExpected: e.target.checked }))}
+                        checked={idvSettings.includeWhatToExpect}
+                        onChange={(e) => setIdvSettings(prev => ({ ...prev, includeWhatToExpect: e.target.checked }))}
                         className="h-3 w-3"
                       />
                       <Label htmlFor="include-what-to-expect" className="text-xs">Include What To Expect</Label>

@@ -1,30 +1,29 @@
 import { useEffect, useRef } from "react";
 
 /**
- *
  * @typedef {Object} IDVProps
- * @property {string} client - The client to use in the IDV process.
- * @property {string} reservationId - The reservation ID to use in the IDV process.
- * @property {Function} onSubmit - The callback to call when the IDV process is complete.
- * @property {string} reservationId - The reservation ID to use in the IDV process.
- * @property {string} primaryColor - The primary color to use in the default styles.
- * @property {boolean} allowSelfieRetryInPlace - Whether to allow the user to retry the selfie without starting the IDV process again.
- * @property {boolean} includeWhatToExpect - Whether to show what the user can expect from the IDV process.
+ * @property {Object}   client                  - The initialized Autohost SDK client instance.
+ * @property {string}   reservationId           - The reservation ID to use in the IDV process.
+ * @property {Function} onSubmit                - Callback invoked when IDV is complete.
+ * @property {string}   [primaryColor]          - Primary color for the component's styles.
+ * @property {boolean}  [allowSelfieRetryInPlace] - Allow retaking the selfie without restarting IDV.
+ * @property {boolean}  [includeWhatToExpect]   - Show a "What to Expect" intro screen before IDV.
  */
 
 /**
- * The IDV component.
- * @param {Function} onSubmit - The callback to call when the IDV process is complete.
- * @param {Client} client - The client to use in the IDV process.
- * @param {string} reservationId - The reservation ID to use in the IDV process.
+ * IDV (Identity Document Verification) component.
+ *
+ * Mounts the SDK's IDV widget which guides the guest through capturing a
+ * photo of their government-issued ID and a live selfie for face-match
+ * verification.
+ *
+ * @param {IDVProps} props
  * @returns {JSX.Element}
  */
 export function IDV({ onSubmit, client, reservationId, ...rest }) {
   const targetRef = useRef(null);
   useEffect(() => {
     if (client) {
-      console.log("mounting", client);
-
       client
         ?.component("IDV", {
           callbacks: {
