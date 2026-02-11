@@ -101,7 +101,7 @@ function RegistrationContent() {
   };
 
   /** Compute user-visible step for the progress indicator. */
-  const layoutStep = !reservationId ? 0 : !client ? 0 : Math.min(step + 1, 4);
+  const layoutStep = !reservationId ? 0 : !client ? 0 : step;
 
   function renderCurrentStep() {
     switch (step) {
